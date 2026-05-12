@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: #f7f9fb;
+  background: linear-gradient(135deg, #f7f9fb 0%, #eef2f5 100%);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .app-main {
@@ -10,19 +11,30 @@
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px 20px;
   animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Responsive padding */
 @media (max-width: 768px) {
   .app-main {
-    padding: 12px;
+    padding: 16px 12px;
   }
 }
 
 @media (max-width: 480px) {
   .app-main {
-    padding: 8px;
+    padding: 12px 8px;
   }
 }
