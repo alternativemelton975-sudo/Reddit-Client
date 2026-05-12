@@ -1,54 +1,37 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import EmptyState from '../components/EmptyState';
 
 describe('EmptyState Component', () => {
   it('should render without crashing', () => {
-    const wrapper = shallow(
-      <EmptyState searchTerm="" selectedCategory="all" />
-    );
-    expect(wrapper.exists()).toBe(true);
+    render(<EmptyState searchTerm="" selectedCategory="all" />);
+    expect(screen.getByText('🔍')).toBeInTheDocument();
   });
 
   it('should display search icon', () => {
-    const wrapper = shallow(
-      <EmptyState searchTerm="" selectedCategory="all" />
-    );
-    expect(wrapper.find('.empty-state-icon').text()).toBe('🔍');
+    render(<EmptyState searchTerm="" selectedCategory="all" />);
+    expect(screen.getByText('🔍')).toBeInTheDocument();
   });
 
   it('should display different message when search term exists', () => {
-    const wrapper = shallow(
-      <EmptyState searchTerm="test" selectedCategory="all" />
-    );
-    expect(wrapper.find('.empty-state-title').text()).toBe('No posts found');
-    expect(wrapper.find('.empty-state-message').text()).toContain('test');
+    render(<EmptyState searchTerm="test" selectedCategory="all" />);
+    expect(screen.getByText('No posts found')).toBeInTheDocument();
+    expect(screen.getByText(/test/)).toBeInTheDocument();
   });
 
   it('should display different message for empty category', () => {
-    const wrapper = shallow(
-      <EmptyState searchTerm="" selectedCategory="photography" />
-    );
-    expect(wrapper.find('.empty-state-title').text()).toBe(
-      'No posts in this category'
-    );
-    expect(wrapper.find('.empty-state-message').text()).toContain('photography');
+    render(<EmptyState searchTerm="" selectedCategory="photography" />);
+    expect(screen.getByText('No posts in this category')).toBeInTheDocument();
+    expect(screen.getByText(/photography/)).toBeInTheDocument();
   });
 
   it('should show clear filters button when filters are active', () => {
-    const wrapper = shallow(
-      <EmptyState searchTerm="test" selectedCategory="all" />
-    );
-    expect(wrapper.find('.empty-state-action').exists()).toBe(true);
-    expect(wrapper.find('.empty-state-action').text()).toBe(
-      'Clear Filters and Try Again'
-    );
+    render(<EmptyState searchTerm="test" selectedCategory="all" />);
+    expect(screen.getByText('Clear Filters and Try Again')).toBeInTheDocument();
   });
 
   it('should not show clear button when no filters active', () => {
-    const wrapper = shallow(
-      <EmptyState searchTerm="" selectedCategory="all" />
-    );
-    expect(wrapper.find('.empty-state-action').exists()).toBe(false);
+    render(<EmptyState searchTerm="" selectedCategory="all" />);
+    expect(screen.queryByText('Clear Filters and Try Again')).not.toBeInTheDocument();
   });
 });

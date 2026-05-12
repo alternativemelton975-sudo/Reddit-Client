@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectPost, openDetailModal } from '../store/postsSlice';
-import { openDetailModal as openModalUI } from '../store/uiSlice';
+import { selectPost } from '../store/postsSlice';
+import { openDetailModal } from '../store/uiSlice';
 import { formatTime, formatNumber } from '../utils/helpers';
 import './PostCard.css';
 
@@ -11,7 +11,6 @@ function PostCard({ post }) {
   const handleCardClick = useCallback(() => {
     dispatch(selectPost(post));
     dispatch(openDetailModal());
-    dispatch(openModalUI());
   }, [dispatch, post]);
 
   return (

@@ -1,6 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import ErrorBoundary from '../components/ErrorBoundary';
+
+const ThrowError = () => {
+  throw new Error('Test error');
+};
 
 describe('ErrorBoundary Component', () => {
   const consoleErrorSpy = jest
@@ -16,55 +20,42 @@ describe('ErrorBoundary Component', () => {
   });
 
   it('should render children when there is no error', () => {
-    const wrapper = shallow(
+    render(
       <ErrorBoundary>
         <div className="test-child">Test Content</div>
       </ErrorBoundary>
     );
-    expect(wrapper.find('.test-child').exists()).toBe(true);
+    expect(screen.getByText('Test Content')).toBeInTheDocument();
   });
 
   it('should render error UI when error is caught', () => {
-    const wrapper = shallow(
+    render(
       <ErrorBoundary>
-        <div>Test</div>
+        <ThrowError />
       </ErrorBoundary>
     );
 
-    const error = new Error('Test error');
-    wrapper.find('ErrorBoundary').instance().componentDidCatch(error, {});
-    wrapper.setState({ hasError: true, error });
-
-    expect(wrapper.find('.error-boundary').exists()).toBe(true);
-    expect(wrapper.find('.error-title').exists()).toBe(true);
+    expect(screen.getByText('⚠️')).toBeInTheDocument();
+    expect(screen.getByText('Something went wrong')).toBeInTheDocument();
   });
 
   it('should display error icon', () => {
-    const wrapper = shallow(
+    render(
       <ErrorBoundary>
-        <div>Test</div>
+        <ThrowError />
       </ErrorBoundary>
     );
-    wrapper.setState({
-      hasError: true,
-      error: new Error('Test'),
-    });
 
-    expect(wrapper.find('.error-icon').text()).toBe('⚠️');
+    expect(screen.getByText('⚠️')).toBeInTheDocument();
   });
 
   it('should have a reload button', () => {
-    const wrapper = shallow(
+    render(
       <ErrorBoundary>
-        <div>Test</div>
+        <ThrowError />
       </ErrorBoundary>
     );
-    wrapper.setState({
-      hasError: true,
-      error: new Error('Test'),
-    });
 
-    expect(wrapper.find('.error-action').exists()).toBe(true);
-    expect(wrapper.find('.error-action').text()).toBe('Reload Application');
+    expect(screen.getByText('Reload Application')).toBeInTheDocument();
   });
 });

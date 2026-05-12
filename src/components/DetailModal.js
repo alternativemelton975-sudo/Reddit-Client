@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  closeDetailModal,
   clearSelectedPost,
 } from '../store/postsSlice';
 import {
-  closeDetailModal as closeModalUI,
+  closeDetailModal,
 } from '../store/uiSlice';
 import { formatTime, formatNumber } from '../utils/helpers';
 import './DetailModal.css';
@@ -15,7 +14,6 @@ function DetailModal({ post }) {
 
   const handleClose = useCallback(() => {
     dispatch(closeDetailModal());
-    dispatch(closeModalUI());
     dispatch(clearSelectedPost());
   }, [dispatch]);
 
